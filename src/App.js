@@ -1,38 +1,55 @@
 import React, { Component } from 'react';
-import { NICE, SUPER_NICE } from './colors';
+import AppBar from 'material-ui/lib/app-bar'
+import List from 'material-ui/lib/lists/list'
+import ListDivider from 'material-ui/lib/lists/list-divider'
+import ListItem from 'material-ui/lib/lists/list-item'
+import Avatar from 'material-ui/lib/avatar'
+import IconMenu from 'material-ui/lib/menus/icon-menu'
+import MenuItem from 'material-ui/lib/menus/menu-item'
+import IconButton from 'material-ui/lib/icon-button'
 
-class Counter extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { counter: 0 };
-    this.interval = setInterval(() => this.tick(), 1000);
-  }
+const users = [
+  {name: 'Foo'},
+  {name: 'Bar'},
+  {name: 'Baz'},
+]
 
-  tick() {
-    this.setState({
-      counter: this.state.counter + this.props.increment
-    });
-  }
+const userStates = [
+  {label: 'Home', deg: 0},
+  {label: 'Work', deg: 90},
+  {label: 'In danger', deg: 180},
+]
 
-  componentWillUnmount() {
-    clearInterval(this.interval);
-  }
-
-  render() {
-    return (
-      <h1 style={{ color: this.props.color }}>
-        Counter ({this.props.increment}): {this.state.counter}
-      </h1>
-    );
-  }
-}
 
 export class App extends Component {
   render() {
+
     return (
       <div>
-        <Counter increment={1} color={NICE} />
-        <Counter increment={5} color={SUPER_NICE} />
+        <AppBar
+          title="Weasel"
+          iconClassNameRight="muidocs-icon-navigation-expand-more" />
+        <List>
+          {users.map(user => (
+            <ListItem
+              primaryText={user.name}
+              leftAvatar={
+                <Avatar
+                  src={`http://api.adorable.io/avatars/128/${user.name}@adorable.io.png`}/>
+              }
+              rightIconButton={
+                <IconMenu iconButtonElement={
+                  <IconButton iconClassName="material-icons" tooltipPosition="bottom-center"
+  tooltip="Sky">settings_system_daydream</IconButton>
+                  }>
+                  {userStates.map(state => (
+                    <MenuItem primaryText={state.label} />
+                  ))}
+                </IconMenu>
+              }/>
+          ))}
+
+        </List>
       </div>
     );
   }
